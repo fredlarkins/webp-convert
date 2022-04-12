@@ -1,0 +1,4 @@
+pathlib==1.0.1
+Pillow==9.1.0
+pkg_resources==0.0.0
+tqdm==4.64.0
