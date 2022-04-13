@@ -69,6 +69,8 @@ DESTINATION = args.destination
 WIDTH = args.width
 HEIGHT = args.height
 
+if not Path(SOURCE).exists():
+    sys.exit(f'Input directory "{SOURCE}" does not exist. Check the arguments you provided when running the script and try again!')
 
 # making the output directory if it doesn't already exist
 
@@ -88,8 +90,14 @@ if Path(DESTINATION).exists():
         sys.exit('No (new) images to convert found in source directory. Exiting program.')
 
 else:
-    Path(DESTINATION).mkdir(parents=True)
-    images_to_convert = [image for image in Path(SOURCE).iterdir()]
+    create_directory_choice = input(f'The directory "{DESTINATION}" does not exist. Would you like to create it? (Y/n) > ')
+    
+    if not create_directory_choice or create_directory_choice.lower().strip() == 'y':
+        Path(DESTINATION).mkdir(parents=True)
+        images_to_convert = [image for image in Path(SOURCE).iterdir()]
+    
+    else:
+        sys.exit('User chose not to create a new directory. Try running the script again.')
 
 
 '''
