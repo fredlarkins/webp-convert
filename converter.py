@@ -4,6 +4,7 @@ from pathlib import Path
 import tqdm
 import sys
 from argparse import ArgumentParser
+from humanize import naturalsize
 
 '''
 Step 1: parse the command-line arguments for the script.
@@ -84,7 +85,7 @@ if not SOURCE.exists():
 if not DESTINATION.exists():
     
     # asking the user to create the directory
-    create_directory_choice = input(f'The directory "{DESTINATION}" does not exist. Would you like to create it? (Y/n) > ')
+    create_directory_choice = input(f'\nThe directory "{DESTINATION}" does not exist. Would you like to create it? (Y/n) > ')
     
     if not create_directory_choice or create_directory_choice.lower().strip() == 'y':
         DESTINATION.mkdir(parents=True)
@@ -115,7 +116,7 @@ def save_as_webp(original_image_filename:Path, destination_directory:Path=DESTIN
     Args:
         original_image_filename (Path): The filename of the image that is being converted to webp.
         destination_directory (Path, optional): The directory where the converted images will be saved. Defaults to DESTINATION.
-        resize (bool, optional): A bool telling the function whether to resize the image. Defaults to False.
+        resize (bool, optional): A bool telling the' function whether to resize the image. Defaults to False.
         width (Union[int, NoneType], optional): The target width of the resized image. Defaults to WIDTH.
         height (Union[int, NoneType], optional): The target height of the resized image. Defaults to HEIGHT.
 
@@ -152,6 +153,7 @@ Step 4: iterating through each image, converting to webp and resizing if necessa
 total_original_bytes = sum([im.stat().st_size for im in images_to_convert])
 total_new_bytes = 0
 
+print('\nConverting images...')
 for image in tqdm.tqdm(images_to_convert):
     if WIDTH:
         new_bytes = save_as_webp(image, resize=True)
@@ -167,7 +169,7 @@ num_images_converted = len(images_to_convert)
 
 print(
 f'''
-Converted {num_images_converted} images to WEBP, saving {bytes_saved} bytes - a {int((bytes_saved) * 100 / total_original_bytes)}% decrease.
+Converted {num_images_converted} images to WEBP, saving {naturalsize(bytes_saved)} - a {int((bytes_saved) * 100 / total_original_bytes)}% decrease.
 '''
 )
 
