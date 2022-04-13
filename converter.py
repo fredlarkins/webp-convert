@@ -28,7 +28,7 @@ parser.add_argument(
     type=str,
     help='Path of the target directory for the converted images.',
     required=False,
-    default='output'
+    default='.'
 )
 
 # the third argument is a group: user needs to specify either a width or a height
@@ -75,30 +75,33 @@ if not Path(SOURCE).exists():
 # making the output directory if it doesn't already exist
 
 '''
-Step 2: loading all the images into a list to iterate over
+Step 2: checking whether the output directory exits, then loading all the images into a list to iterate over
 '''
 # saving the images that have already been converted in a variable
 # we can use this to ensure that we're not converting images over and over again unnecessarily
-if Path(DESTINATION).exists():
-    already_converted = [file.stem for file in Path(DESTINATION).iterdir()]
-
-    # now iterating through the source destination files, checking they're not in the 'already_converted' list
-    images_to_convert = [image for image in Path(SOURCE).iterdir() if image.stem not in already_converted]
-
-    # in case there's nothing new to convert
-    if not images_to_convert:
-        sys.exit('No (new) images to convert found in source directory. Exiting program.')
-
-else:
+if not Path(DESTINATION).exists():
+    
+    # asking the user to create the directory
     create_directory_choice = input(f'The directory "{DESTINATION}" does not exist. Would you like to create it? (Y/n) > ')
     
     if not create_directory_choice or create_directory_choice.lower().strip() == 'y':
         Path(DESTINATION).mkdir(parents=True)
-        images_to_convert = [image for image in Path(SOURCE).iterdir()]
     
     else:
         sys.exit('User chose not to create a new directory. Try running the script again.')
 
+# if the destination directory has just been created, this'll merely return an empty list
+already_converted = [file.stem for file in Path(DESTINATION).iterdir()]
+
+# now generating our list of file paths of the images to convert
+images_to_convert = [image for image in Path(SOURCE).iterdir()          # iterating through the source dir with iterdir()
+                     if image.stem not in already_converted             # checking whether the image has already been converted
+                     and image.suffix in ['.jpg', '.jpeg', '.png']]     # also checking whether the image is a JPG, JPEG or PNG
+
+
+# in case there's nothing new to convert
+if not images_to_convert:
+    sys.exit('No (new) images to convert found in source directory. Exiting program.')
 
 '''
 Step 3: defining a function that'll resize and convert an image
