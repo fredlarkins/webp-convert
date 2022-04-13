@@ -54,8 +54,10 @@ python converter.py -s holiday-snaps -d optimised-holiday-snaps
 ```
 Would convert all images in `holiday-snaps` and save them in `optimised-holiday-snaps`.
 
-### `-w, --width` **or** `-g, --height`
-The width or height in px of the converted images. **Note:** you can use _either_ the `-w` _or_ the `-g` flag, but not both.
+### `-w, --width`   **or**   `-g, --height`
+The width or height in px of the converted images.
+
+**Note:** you can use _either_ the `-w` _or_ the `-g` flag, but not both.
 
 The images will be resized to be a maximum of width/height in px. If the original image is _smaller_ than the width/height supplied, it will be left untouched (i.e. not scaled up).
 
@@ -67,9 +69,9 @@ Would convert all images in `holiday-snaps`, save them to `optimised-holiday-sna
 
 
 ## Applications
-Like most of the Python scripts I write (😅), I'll be running this as a Cron Job. In my case, it'll be on [my blog](https://freddielarkins.xyz) server to optimise my images. That way, I don't have to worry about manually converting them every time I write an article.
+Like most of the Python scripts I write (😅), I'll be running this as a Cron Job. In my case, it'll be on [my blog's](https://freddielarkins.xyz) server to optimise my images. That way, I don't have to worry about manually converting them every time I write an article.
 
-Otherwise, you could use it as a one-off to batch convert a load of images. The terminal will display a progress bar 
+Otherwise, you could use it as a one-off to batch convert a load of images. The terminal will display a progress bar so you can keep track of how long it'll take to complete (handy if you're converting hundreds of images).
 
 ```console
 $ python converter.py -s holiday-snaps -d optimised-holiday-snaps -w 1000
